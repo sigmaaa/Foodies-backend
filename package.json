@@ -1,0 +1,32 @@
+{
+  "name": "foodies-backend",
+  "version": "1.0.0",
+  "description": "Final Project team 04",
+  "main": "eslint.config.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slonic32/Foodies-backend.git"
+  },
+  "keywords": [],
+  "author": "Artem Hordiyevskyy <hordiyevskyy@gmail.com> (https://hordiyevskyy.com/)",
+  "license": "GPL",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/slonic32/Foodies-backend/issues"
+  },
+  "homepage": "https://github.com/slonic32/Foodies-backend#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^1.1.0",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1"
+  }
+}
