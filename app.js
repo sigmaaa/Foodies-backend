@@ -2,10 +2,10 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import 'dotenv/config';
-import { connectDatabase } from './models/pgsql.js';
+import { connectDatabase } from './db/connectDatabase.js';
 
-import contactsRouter from './routes/contactsRouter.js';
 import authRouter from './routes/authRouter.js';
+import usersRouter from './routes/usersRouter.js';
 
 try {
     await connectDatabase();
@@ -22,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 
 app.use(express.static('public'));
 

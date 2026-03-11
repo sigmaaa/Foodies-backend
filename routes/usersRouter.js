@@ -1,32 +1,11 @@
 import express from 'express';
-import {
-    currentUser,
-    loginUser,
-    logoutUser,
-    registerUser,
-    updateAvatar,
-    verifyUser,
-    resentVerification,
-} from '../controllers/authControllers.js';
+import { updateAvatar } from '../controllers/usersControllers.js';
 import { auth } from '../middlewares/authMiddleware.js';
-import { authValidate, authVerificationValidate } from '../middlewares/authValidate.js';
 
 import { uploadImage } from '../middlewares/imgMiddleware.js';
 
-const authRouter = express.Router();
+const usersRouter = express.Router();
 
-authRouter.post('/register', authValidate, registerUser);
+usersRouter.patch('/avatar', auth, uploadImage, updateAvatar);
 
-authRouter.post('/login', authValidate, loginUser);
-
-authRouter.post('/logout', auth, logoutUser);
-
-authRouter.get('/current', auth, currentUser);
-
-authRouter.patch('/avatars', auth, uploadImage, updateAvatar);
-
-authRouter.get('/verify/:verificationToken', verifyUser);
-
-authRouter.post('/verify', authVerificationValidate, resentVerification);
-
-export default authRouter;
+export default usersRouter;

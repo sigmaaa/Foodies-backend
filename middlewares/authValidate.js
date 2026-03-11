@@ -9,12 +9,3 @@ export async function authValidate(req, res, next) {
         next(error);
     }
 }
-
-export async function authVerificationValidate(req, res, next) {
-    try {
-        validate(verificationSchema, req.body);
-        next();
-    } catch (error) {
-        next(error);
-    }
-}
