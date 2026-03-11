@@ -10,6 +10,7 @@ export const sequelize = new Sequelize({
     logging: false,
     dialectOptions: {
         ssl: true,
+        rejectUnauthorized: false,
         connectionTimeoutMillis: 30000,
         query_timeout: 30000,
         keepAlive: true,
