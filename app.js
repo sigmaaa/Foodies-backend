@@ -4,13 +4,12 @@ import cors from 'cors';
 import 'dotenv/config';
 import { connectDatabase } from './db/connectDatabase.js';
 
-
-
 import { globalErrorHandler } from './helpers/globalErrorHandler.js';
 
 import authRouter from './routes/authRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import categoriesRouter from './routes/categoriesRouter.js';
+import areasRouter from './routes/areasRouter.js';
 
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './helpers/swagger.js';
@@ -38,6 +37,7 @@ app.use(`${pathPrefix}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(`${pathPrefix}/auth`, authRouter);
 app.use(`${pathPrefix}/users`, usersRouter);
+app.use(`${pathPrefix}/areas`, areasRouter);
 
 app.use(express.static('public'));
 
