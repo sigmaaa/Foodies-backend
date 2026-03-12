@@ -14,6 +14,7 @@ import categoriesRouter from './routes/categoriesRouter.js';
 
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './helpers/swagger.js';
+import testimonialsRouter from './routes/testimonialsRouter.js';
 
 try {
     await connectDatabase();
@@ -40,6 +41,7 @@ app.use(`${pathPrefix}/users`, usersRouter);
 
 app.use(express.static('public'));
 
+app.use('/api/testimonials', testimonialsRouter);
 app.use('/api/categories', categoriesRouter);
 
 app.use((_, res) => {
