@@ -142,3 +142,15 @@ Subscription.belongsTo(User, {
     foreignKey: 'following_id',
     as: 'following',
 });
+
+// User -> Testimonial
+User.hasMany(Testimonial, {
+    foreignKey: 'owner_id',
+    as: 'testimonials',
+    onDelete: 'CASCADE',
+});
+
+Testimonial.belongsTo(User, {
+    foreignKey: 'owner_id',
+    as: 'owner',
+});
