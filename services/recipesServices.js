@@ -6,6 +6,7 @@ import { Category } from '../db/models/categoriesModel.js';
 import { Area } from '../db/models/areasModel.js';
 import { RecipeIngredient } from '../db/models/recipeIngredientsModel.js';
 import HttpError from '../helpers/HttpError.js';
+import { UniqueConstraintError } from 'sequelize';
 
 export const listRecipes = async ({ category, area, ingredient, page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit;
@@ -164,10 +165,17 @@ export const addRecipeToFavorites = async (userId, recipeId) => {
         throw HttpError(409, 'Recipe is already in favorites');
     }
 
-    return await Favorite.create({
-        user_id: userId,
-        recipe_id: recipeId,
-    });
+    try {
+        return await Favorite.create({
+            user_id: userId,
+            recipe_id: recipeId,
+        });
+    } catch (error) {
+        if (error instanceof UniqueConstraintError) {
+            throw HttpError(409, 'Recipe is already in favorites');
+        }
+        throw error;
+    }
 };
 
 export const removeRecipeFromFavorites = async (userId, recipeId) => {
