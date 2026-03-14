@@ -15,6 +15,7 @@ recipesRouter.get('/own', auth, recipeController.getOwn);
 recipesRouter.get('/:id', recipeController.getById);
 
 recipesRouter.post('/', auth, validateBody(createRecipeSchema), recipeController.create);
+recipesRouter.post('/:id/favorite', auth, recipeController.addToFavorites);
 
 recipesRouter.delete('/:id', auth, recipeController.remove);
 
@@ -77,6 +78,17 @@ Swagger docs
  *               message:
  *                 type: string
  *                 example: "category must be a number"
+ *
+ *     Conflict:
+ *       description: Resource conflict
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: Recipe is already in favorites
  */
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -312,6 +324,55 @@ Swagger docs
  *         $ref: '#/components/responses/BadRequest'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
+ */
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * @swagger
+ * /api/recipes/{id}/favorite:
+ *   post:
+ *     summary: Add recipe to authenticated user's favorites
+ *     description: >
+ *       Creates a favorite relation between current user and recipe.
+ *       Returns 409 if recipe is already in favorites.
+ *     tags: [Recipes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Recipe integer ID
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       201:
+ *         description: Recipe successfully added to favorites
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 11
+ *                     user_id:
+ *                       type: integer
+ *                       example: 3
+ *                     recipe_id:
+ *                       type: integer
+ *                       example: 1
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       409:
+ *         $ref: '#/components/responses/Conflict'
  */
 
 // ─────────────────────────────────────────────────────────────────────────────

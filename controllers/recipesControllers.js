@@ -68,6 +68,16 @@ export const create = async (req, res, next) => {
     }
 };
 
+export const addToFavorites = async (req, res, next) => {
+    try {
+        const favorite = await recipesService.addRecipeToFavorites(req.user.id, req.params.id);
+
+        res.status(201).json({ data: favorite });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const remove = async (req, res, next) => {
     try {
         await recipesService.deleteRecipe(req.user.id, req.params.id);

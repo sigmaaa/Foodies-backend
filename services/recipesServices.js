@@ -113,6 +113,30 @@ export const createRecipe = async (userId, data) => {
     return await Recipe.create({ ...data, owner_id: userId });
 };
 
+export const addRecipeToFavorites = async (userId, recipeId) => {
+    const recipe = await Recipe.findByPk(recipeId);
+
+    if (!recipe) {
+        throw HttpError(404, 'Recipe not found');
+    }
+
+    const existingFavorite = await Favorite.findOne({
+        where: {
+            user_id: userId,
+            recipe_id: recipeId,
+        },
+    });
+
+    if (existingFavorite) {
+        throw HttpError(409, 'Recipe is already in favorites');
+    }
+
+    return await Favorite.create({
+        user_id: userId,
+        recipe_id: recipeId,
+    });
+};
+
 export const deleteRecipe = async (userId, recipeId) => {
     const recipe = await Recipe.findOne({ where: { id: recipeId, owner_id: userId } });
     if (!recipe) return null;
