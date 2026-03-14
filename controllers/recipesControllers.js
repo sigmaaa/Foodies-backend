@@ -78,6 +78,16 @@ export const addToFavorites = async (req, res, next) => {
     }
 };
 
+export const removeFromFavorites = async (req, res, next) => {
+    try {
+        await recipesService.removeRecipeFromFavorites(req.user.id, req.params.id);
+
+        res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const remove = async (req, res, next) => {
     try {
         await recipesService.deleteRecipe(req.user.id, req.params.id);

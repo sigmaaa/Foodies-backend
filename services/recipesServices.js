@@ -137,6 +137,27 @@ export const addRecipeToFavorites = async (userId, recipeId) => {
     });
 };
 
+export const removeRecipeFromFavorites = async (userId, recipeId) => {
+    const recipe = await Recipe.findByPk(recipeId);
+
+    if (!recipe) {
+        throw HttpError(404, 'Recipe not found');
+    }
+
+    const deletedCount = await Favorite.destroy({
+        where: {
+            user_id: userId,
+            recipe_id: recipeId,
+        },
+    });
+
+    if (!deletedCount) {
+        throw HttpError(404, 'Recipe is not in favorites');
+    }
+
+    return true;
+};
+
 export const deleteRecipe = async (userId, recipeId) => {
     const recipe = await Recipe.findOne({ where: { id: recipeId, owner_id: userId } });
     if (!recipe) return null;

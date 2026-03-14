@@ -16,6 +16,7 @@ recipesRouter.get('/:id', recipeController.getById);
 
 recipesRouter.post('/', auth, validateBody(createRecipeSchema), recipeController.create);
 recipesRouter.post('/:id/favorite', auth, recipeController.addToFavorites);
+recipesRouter.delete('/:id/favorite', auth, recipeController.removeFromFavorites);
 
 recipesRouter.delete('/:id', auth, recipeController.remove);
 
@@ -373,6 +374,36 @@ Swagger docs
  *         $ref: '#/components/responses/NotFound'
  *       409:
  *         $ref: '#/components/responses/Conflict'
+ */
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * @swagger
+ * /api/recipes/{id}/favorite:
+ *   delete:
+ *     summary: Remove recipe from authenticated user's favorites
+ *     description: >
+ *       Removes a favorite relation between current user and recipe.
+ *       Returns 404 if recipe does not exist or is not in favorites.
+ *     tags: [Recipes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Recipe integer ID
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       204:
+ *         description: Recipe successfully removed from favorites (no content)
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 
 // ─────────────────────────────────────────────────────────────────────────────
