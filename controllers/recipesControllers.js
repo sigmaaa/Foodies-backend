@@ -51,8 +51,12 @@ export const getPopular = async (req, res, next) => {
 
 export const getById = async (req, res, next) => {
     try {
-        const recipeId = Number.parseInt(req.params.id, 10);
-        if (!Number.isInteger(recipeId)) {
+        const idParam = req.params.id;
+        if (!/^\d+$/.test(idParam)) {
+            return res.status(400).json({ message: 'Invalid recipe id' });
+        }
+        const recipeId = Number(idParam);
+        if (!Number.isInteger(recipeId) || recipeId < 1) {
             return res.status(400).json({ message: 'Invalid recipe id' });
         }
 
