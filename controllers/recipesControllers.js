@@ -16,6 +16,17 @@ const parseLimit = (value, defaultValue = 10, maxValue = 50) => {
     return Math.min(Math.floor(num), maxValue);
 };
 
+const parseRecipeId = (value) => {
+    if (typeof value !== 'string' || !/^[1-9]\d*$/.test(value)) {
+        return null;
+    }
+    const num = Number(value);
+    if (!Number.isSafeInteger(num) || num < 1) {
+        return null;
+    }
+    return num;
+};
+
 export const getAll = async (req, res, next) => {
     try {
         const { category, area, ingredient } = req.query;
@@ -85,22 +96,22 @@ export const getOwn = async (req, res, next) => {
     }
 };
 
-    export const getFavorites = async (req, res, next) => {
-        try {
-            const page = parsePage(req.query.page, 1);
-            const limit = parseLimit(req.query.limit, 10, 50);
+export const getFavorites = async (req, res, next) => {
+    try {
+        const page = parsePage(req.query.page, 1);
+        const limit = parseLimit(req.query.limit, 10, 50);
 
-            const { recipes, meta } = await recipesService.getUserFavoriteRecipes({
-                user_id: req.user.id,
-                page,
-                limit,
-            });
+        const { recipes, meta } = await recipesService.getUserFavoriteRecipes({
+            user_id: req.user.id,
+            page,
+            limit,
+        });
 
-            res.json({ data: { recipes, meta } });
-        } catch (error) {
-            next(error);
-        }
-    };
+        res.json({ data: { recipes, meta } });
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const create = async (req, res, next) => {
     try {
@@ -114,8 +125,8 @@ export const create = async (req, res, next) => {
 
 export const addToFavorites = async (req, res, next) => {
     try {
-        const recipeId = Number.parseInt(req.params.id, 10);
-        if (!Number.isInteger(recipeId)) {
+        const recipeId = parseRecipeId(req.params.id);
+        if (recipeId === null) {
             return res.status(400).json({ message: 'Invalid recipe id' });
         }
 
@@ -129,8 +140,8 @@ export const addToFavorites = async (req, res, next) => {
 
 export const removeFromFavorites = async (req, res, next) => {
     try {
-        const recipeId = Number.parseInt(req.params.id, 10);
-        if (!Number.isInteger(recipeId)) {
+        const recipeId = parseRecipeId(req.params.id);
+        if (recipeId === null) {
             return res.status(400).json({ message: 'Invalid recipe id' });
         }
 
@@ -144,8 +155,8 @@ export const removeFromFavorites = async (req, res, next) => {
 
 export const remove = async (req, res, next) => {
     try {
-        const recipeId = Number.parseInt(req.params.id, 10);
-        if (!Number.isInteger(recipeId)) {
+        const recipeId = parseRecipeId(req.params.id);
+        if (recipeId === null) {
             return res.status(400).json({ message: 'Invalid recipe id' });
         }
 
